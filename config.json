@@ -1,9 +1,9 @@
 {
   "Licensee": "Buckman APAC",
-  "EulaAccepted": "true",
-  "LeftLogo": "D:\\Projects\\YankeeShower\\YankeeShower\\bin\\Debug\\Buckman20.png",
-  "RightLogo": "D:\\Projects\\YankeeShower\\YankeeShower\\bin\\Debug\\PT.ico",
+  "EulaAccepted": "false",
+  "LeftLogo": "",
+  "RightLogo": "",
   "FooterText": "Chemistry Connected",
   "FooterTextColor": "#FF006A53",
-  "MRUList": "[\"D:\\\\Projects\\\\YankeeShower\\\\YankeeShower\\\\bin\\\\Debug\\\\new test 2019-2.SHR\",\"D:\\\\Projects\\\\YankeeShower\\\\YankeeShower\\\\bin\\\\Debug\\\\new test 2019.SHR\"]"
+  "MRUList": "[]"
 }
