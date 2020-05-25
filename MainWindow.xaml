@@ -1,0 +1,414 @@
+﻿<Window 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        x:Class="YankeeShower.MainWindow"
+        xmlns:yn="clr-namespace:YankeeShower"
+        xmlns:shwr="clr-namespace:YankeeShower.Usercontrols"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" 
+        Name="mainwindow"
+        BorderThickness="1"  FontFamily="Segoe UI"
+        Icon="/YankeeShower;component/Images/nozzle.ico"
+        Title="Yankee Coating Shower Designer Pro"  WindowStartupLocation="CenterScreen"  WindowState="Maximized">
+
+    <Window.Resources>
+        <Style x:Key="Labelheading" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style x:Key="Heading" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Margin" Value="4,2,0,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style  TargetType="xctk:IntegerUpDown">
+            <Setter Property="Width" Value="54"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="DisplayDefaultValueOnEmptyText" Value="True"/>
+        </Style>
+
+        <Style  TargetType="xctk:DecimalUpDown">
+            <Setter Property="Width" Value="54"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="DisplayDefaultValueOnEmptyText" Value="True"/>
+        </Style>
+
+        <Style x:Key="DoubleUpDown" TargetType="xctk:DoubleUpDown">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="DisplayDefaultValueOnEmptyText" Value="True"/>
+        </Style>
+
+        <Style x:Key="IntUpDown" TargetType="xctk:IntegerUpDown">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="DisplayDefaultValueOnEmptyText" Value="True"/>
+        </Style>
+
+        <Style x:Key="rptbtn" TargetType="RepeatButton">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="22"/>
+        </Style>
+
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Top" Height="32" >
+            <Menu Padding="2,6,2,0">
+                <MenuItem Header="_File" FontSize="12"  FontFamily="Segoe UI">
+                    <MenuItem Header="_New Shower" Command="{Binding NewShower}" ToolTip="Create new shower design">
+                        <MenuItem.Icon>
+                            <Image Source="/YankeeShower;component/Images/new.ico" Height="16" Width="20" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Open Shower" Command="{Binding OpenShower}" ToolTip="Open existing shower design">
+                        <MenuItem.Icon>
+                            <Image Source="/YankeeShower;component/Images/open.ico" Height="16" Width="20" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="_Save Shower" Command="{Binding SaveShower}" ToolTip="Save current shower design">
+                        <MenuItem.Icon>
+                            <Image Source="/YankeeShower;component/Images/save.ico" Height="16" Width="20" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem x:Name="MRUList" Header="Recent Showers" ItemsSource="{Binding MenuItems}">
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate DataType="MenuItem" >
+                                <StackPanel Orientation="Horizontal" Height="24" >
+                                    <TextBlock FontFamily="Segoe UI" Text="{Binding NumberText, StringFormat={}{0}.}" />
+                                    <TextBlock FontFamily="Segoe UI" Text="{Binding HeaderText}" Margin="4,0,0,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding Command}"/>
+                                <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                    <Separator/>
+
+                    <MenuItem Header="_Exit" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                        <MenuItem.Icon>
+                            <Image Source="/YankeeShower;component/Images/closefolder.ico" Height="16" Width="20" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Designer" FontSize="12"  FontFamily="Segoe UI" Command="{Binding OpenDesigner}" ToolTip="Design Nozzle Spray Patterns" />
+
+                <MenuItem Header="_Report" FontSize="12"  FontFamily="Segoe UI">
+                    <MenuItem Header="_Defaults" Command="{Binding OpenDefaults}" ToolTip="Report Header and Footer"/>
+                    <MenuItem Header="_Print Preview" Name="PrintPreview" Click="PrintPreview_Click" ToolTip="Preview Report (Landscape format)">
+                        <MenuItem.Icon>
+                            <Image Source="/YankeeShower;component/Images/printpreview.ico" Height="16" Width="20" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_About" FontSize="12"  FontFamily="Segoe UI">
+                    <MenuItem Header="_About" Command="{Binding OpenAbout}" ToolTip="Application details and End-User Agreement" />
+                    <MenuItem Header="_Help" Command="{Binding OpenHelp}" ToolTip="The Getting Started information will open up in a web browser window" />
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom" Height="20" />
+        <Border DockPanel.Dock="Left" BorderBrush="Blue" BorderThickness="1" CornerRadius="2" x:Name="datatable1bdr" Margin="2,2,0,0" Background="WhiteSmoke" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                <Grid x:Name="NozzleDataPnl" VerticalAlignment="Top" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125"/>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="56"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Text="Shower Design Data" Style="{StaticResource Heading}" Grid.Column="0" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Operating Pressure" Style="{StaticResource Labelheading}" />
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" x:Name="pressure" 
+                                        AllowDrop="False"
+                                        IsTabStop="False" 
+                                        Style="{StaticResource IntUpDown}"
+                                        Value="{Binding OperatingPressure}" Minimum="200" Maximum="800"  />
+                    <TextBlock x:Name="lblpressure" Grid.Column="2" Grid.Row="1" Text="kPa"   Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Shower Temperature"  Style="{StaticResource Labelheading}"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" x:Name="temperature" Style="{StaticResource IntUpDown}"  Value="{Binding ShowerTemperature}" 
+                                        AllowDrop="False"
+                                        IsTabStop="False"
+                                        Minimum="10" Maximum="100" DefaultValue="40"   />
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="&#x00B0;C"   Style="{StaticResource Labelheading}" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding NumberNozzles, StringFormat={}Nozzle Data ({0})}" Style="{StaticResource Heading}" />
+                    <Button Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="4,0,4,0" Height="20" 
+                        Style="{StaticResource LinkButton}"
+                        Command="{Binding OpenNozzleSettings}" 
+                        ToolTip="Click to open nozzles table">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" ToolTip="Add or Edit Shower Nozzles" VerticalAlignment="Center">
+                                <Image Margin="2,0,0,0" Source="/YankeeShower;component/Images/add.ico" Height="16" Width="20" />
+                                <TextBlock Margin="2,0" Text="Add Nozzles" FontSize="14" FontFamily="Segoe UI" Height="20"/>
+                            </StackPanel>
+                        </Button.Content>
+
+                    </Button>
+
+                    <TextBlock Grid.Column="0" Grid.Row="6" Text="Yankee Data" Style="{StaticResource Heading}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="7" Text="Width" Style="{StaticResource Labelheading}" />
+                    <xctk:DoubleUpDown Grid.Column="1" Grid.Row="7" x:Name="yankeewidth" Style="{StaticResource DoubleUpDown}" Value="{Binding YankeeWidth}" 
+                                       AllowDrop="False"
+                                       IsTabStop="False"
+                                       FormatString="F2" Minimum="1.00" Maximum="10.00" DefaultValue="4.00" Increment="0.01"    />
+                    <TextBlock Grid.Column="2" Grid.Row="7" x:Name="lblyankeewidth" Text="m"  Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="8" Text="Diameter" Style="{StaticResource Labelheading}" />
+                    <xctk:DoubleUpDown Grid.Column="1" Grid.Row="8" x:Name="yankeediameter" Style="{StaticResource DoubleUpDown}" Value="{Binding YankeeDiameter}" 
+                                       AllowDrop="False"
+                                       IsTabStop="False"
+                                       FormatString="F2" Minimum="1.00" Maximum="10.00" DefaultValue="3.00" Increment="0.01"    />
+                    <TextBlock Grid.Column="2" Grid.Row="8" x:Name="lblyankeediameter" Text="m"  Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="9" Text="Speed" Style="{StaticResource Labelheading}"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="9" x:Name="yankeespeed" Style="{StaticResource IntUpDown}" Value="{Binding YankeeSpeed}" 
+                                        AllowDrop="False"
+                                        IsTabStop="False"
+                                        Minimum="100" Maximum="2500" DefaultValue="1500" Increment="1" />
+                    <TextBlock Grid.Column="2" Grid.Row="9" x:Name="lblyankeespeed" Text="m/min"  Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="10" Text="Shower to Nip" Style="{StaticResource Labelheading}"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="10" x:Name="dwelldistance" Style="{StaticResource IntUpDown}" Value="{Binding DwellDistance}" 
+                                        AllowDrop="False"
+                                        IsTabStop="False"
+                                        Minimum="300" Maximum="2000" DefaultValue="750" Increment="1" ToolTip="Distance between SPR nip and coating shower impact zone" />
+                    <TextBlock Grid.Column="2" Grid.Row="10" x:Name="lbldwelldistance" Text="mm"  Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="11" Text="Dwell Time" Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding DwellTime}" TextAlignment="Right" Style="{StaticResource Labelheading}" 
+                               ToolTip="Time between impact zone and SPR nip"
+                               HorizontalAlignment="Stretch"/>
+                    <TextBlock Grid.Column="2" Grid.Row="11" x:Name="lbldwelltime" Text="ms" Style="{StaticResource Labelheading}" />
+                    
+                    <TextBlock Grid.Column="0" Grid.Row="12" Text="Revolution Time" Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding YankeeRevolution}" TextAlignment="Right" Style="{StaticResource Labelheading}" 
+                               ToolTip="Time for full Yankee revolution"
+                               HorizontalAlignment="Stretch"/>
+                    <TextBlock Grid.Column="2" Grid.Row="12" Text="ms" Style="{StaticResource Labelheading}" />
+
+
+                    <TextBlock Grid.ColumnSpan="2" Grid.Row="14" Text="Thermal Load"  Style="{StaticResource Heading}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="15" Text="Evaporative Energy"  Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="15" Text="{Binding EvapEnergy, StringFormat=F3}" TextAlignment="Right" 
+                               ToolTip="Evaporative energy required to evaporate total shower water flow"
+                               Style="{StaticResource Labelheading}" HorizontalAlignment="Stretch"/>
+                    <TextBlock Grid.Column="2" Grid.Row="15" Text="MJ/min" Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="16" Text="Evaporative Load"  Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="16" Text="{Binding EvapLoadkgperhrpersqm, StringFormat=F1}" TextAlignment="Right" 
+                               ToolTip="Evaporative load of shower from impact zone to SPR nip"
+                               Style="{StaticResource Labelheading}" HorizontalAlignment="Stretch"/>
+                    <TextBlock Grid.Column="2" Grid.Row="16" Text="kg/hr/m²" Style="{StaticResource Labelheading}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="17" Text="Total Evaporative Load"  Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="17" Text="{Binding TotalEvapLoad, StringFormat=F3}" TextAlignment="Right" 
+                               ToolTip="Total shower water evaporative load per hour over Yankee surface area"
+                               Style="{StaticResource Labelheading}" HorizontalAlignment="Stretch"/>
+                    <TextBlock Grid.Column="2" Grid.Row="17" Text="g/hr/m²" Style="{StaticResource Labelheading}" />
+                    
+                    <TextBlock Grid.ColumnSpan="2" Grid.Row="19" Text="Coverage Data"  Style="{StaticResource Heading}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="20" Text="Shower Width"  Style="{StaticResource Labelheading}" 
+                           ToolTip="Distance from front to back. (includes gaps)"/>
+                    <TextBlock Grid.Column="1" Grid.Row="20" Text="{Binding TotalShowerWidth, StringFormat=F3, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="Distance from front to back. (includes gaps)"
+                           TextAlignment="Right" HorizontalAlignment="Stretch"
+                               Style="{StaticResource Labelheading}" />
+                    <TextBlock Grid.Column="2" Grid.Row="20" Text="m" Style="{StaticResource Labelheading}"  />
+
+                    <TextBlock Grid.Column="0" Grid.Row="21" Text="Shower flow"  Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="21" Text="{Binding ShowerFlow, StringFormat=F3}" TextAlignment="Right" 
+                               ToolTip="Total shower flow to Yankee dryer"
+                               HorizontalAlignment="Stretch" Style="{StaticResource Labelheading}"/>
+                    <TextBlock Grid.Column="2" Grid.Row="21" Text="l/min" Style="{StaticResource Labelheading}"  />
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="23" ToolTip="Distance between nozzles">
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&lt;&lt;" Command="{Binding DecrSpacing}" Margin="20,0,0,0" ToolTip="Decrease spacing between nozzles"/>
+                        <TextBlock Text="Nozzle Spacing" Width="100" TextAlignment="Center" FontSize="12" Height="20" Margin="4,0,4,0"/>
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&gt;&gt;" Command="{Binding IncrSpacing}" ToolTip="Increase spacing between nozzles" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="24" ToolTip="Distance from nozzle tip to Yankee surface">
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&lt;&lt;" Command="{Binding DecrNozzleToYankee}" Margin="20,0,0,0" ToolTip="Decrease distance from nozzle to Yankee"/>
+                        <TextBlock Text="Nozzle to Yankee" Width="100" TextAlignment="Center" FontSize="12" Height="20" Margin="4,0,4,0"/>
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&gt;&gt;" Command="{Binding IncrNozzleToYankee}" ToolTip="Increase distance from nozzle to Yankee" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="25" ToolTip="Nozzle rotation">
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&lt;&lt;" Command="{Binding DecrNozzleRotation}" Margin="20,0,0,0" ToolTip="Decrease nozzle rotation in holder"/>
+                        <TextBlock Text="Nozzle Rotation" Width="100" TextAlignment="Center" FontSize="12" Height="20" Margin="4,0,4,0"/>
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&gt;&gt;" Command="{Binding IncrNozzleRotation}" ToolTip="Increase nozzle rotation in holder"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="26" ToolTip="Nozzle angle">
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&lt;&lt;" Command="{Binding DecrNozzleAngle}" Margin="20,0,0,0" ToolTip="Decrease nozzle spray angle"/>
+                        <TextBlock Text="Nozzle Angle" Width="100" TextAlignment="Center" FontSize="12" Height="20" Margin="4,0,4,0"/>
+                        <RepeatButton Style="{StaticResource rptbtn}" Content="&gt;&gt;" Command="{Binding IncrNozzleAngle}" ToolTip="Increase nozzle spray angle"/>
+                    </StackPanel>
+
+                </Grid>
+
+            </ScrollViewer>
+        </Border>
+
+        <Border  BorderBrush="Blue" BorderThickness="1" CornerRadius="2" x:Name="showergraphicsbdr" Margin="2,2,2,0" Background="WhiteSmoke" >
+            <Grid x:Name="showergraphics" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Border}}, Path=ActualWidth}" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="1" Text="Shower Pattern (volumetric coverage)" FontWeight="Bold" TextAlignment="Center" FontSize="16" Height="20" VerticalAlignment="Center"/>
+
+                    <Button Grid.Column="2" x:Name="btnCopyToClipboard" HorizontalAlignment="Right"  Height="20" VerticalAlignment="Center"
+                            Style="{StaticResource LinkButton}"                
+                            Command="{Binding CopyToClipboardCommand}" CommandParameter="{Binding ElementName=adDec1}"
+                            Margin="0,1,10,1" >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" ToolTip="Copy entire shower design to clipboard" VerticalAlignment="Center">
+                                <Image Margin="2,0,0,0" Source="/YankeeShower;component/Images/Copy.ico" Height="16" Width="20" />
+                                <TextBlock Margin="2,0" Text="Copy to Clipboard" FontFamily="Segoe UI"  FontSize="14" Height="20"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Grid.Column="0" HorizontalAlignment="Left"  Height="20" VerticalAlignment="Center"
+                            Style="{StaticResource LinkButton}"                
+                            Command="{Binding CopyToClipboardCommand}" CommandParameter="{Binding ElementName=vb}"
+                            Margin="0,1,10,1" >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" ToolTip="Copy visible portion of shower design to clipboard" VerticalAlignment="Center">
+                                <Image Margin="2,0,0,0" Source="/YankeeShower;component/Images/Copy.ico" Height="16" Width="20" />
+                                <TextBlock Margin="2,0" Text="Copy visible shower to Clipboard" FontFamily="Segoe UI"  FontSize="14" Height="20"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+
+                <ScrollViewer Grid.Row="1" Background="White" x:Name="vb" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto"  >
+
+                    <AdornerDecorator x:Name="adDec1" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+                        <Grid ClipToBounds="True" VerticalAlignment="Top" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="86*"/>
+                                <ColumnDefinition Width="389*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{Binding ShowerPatternGridHeight, Mode=OneTime}"/>
+                                <RowDefinition Height="600"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <yn:Coverage Grid.Row="0" x:Name="Coverage" VerticalAlignment="Top" Height="{Binding ShowerPatternGridHeight, Mode=OneTime}" ShowerPattern="{Binding ShowerPattern}" 
+                                         YankeeSpeed="{Binding YankeeSpeed}" Background="White" Grid.ColumnSpan="2"                                                                         
+                                         CoverageColour="{Binding CoverageColour}">
+
+                                <yn:Coverage.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem>
+                                            <MenuItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Coverage Colour" Width="100"/>
+                                                    <xctk:ColorPicker ColorMode="ColorPalette" SelectedColor="{Binding CoverageColour}" />
+                                                </StackPanel>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+
+                                        <MenuItem>
+                                            <MenuItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Smoothing" Width="100"/>
+                                                    <xctk:IntegerUpDown Value="{Binding SmoothingDegree, FallbackValue=0, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+                                                            Increment="1" Minimum="0" DefaultValue="0" 
+                                                            ToolTip="Smoothing of spray pattern"
+                                                            Maximum="100" Width="50"/>
+                                                </StackPanel>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </yn:Coverage.ContextMenu>
+
+                            </yn:Coverage>
+
+                            <shwr:Showercontrol Grid.Row="1" x:Name="showerpat" MaximumNozzleToYankee="{Binding MaximumNozzleToYankee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ShowerWidth="{Binding TotalShowerWidth, Mode=OneWay, FallbackValue=0}" Nozzles="{Binding Nozzles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Grid.ColumnSpan="2" >
+
+                            </shwr:Showercontrol>
+
+                        </Grid>
+                    </AdornerDecorator>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+    </DockPanel>
+</Window>
