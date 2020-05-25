@@ -1,0 +1,208 @@
+﻿<Window  x:Class="YankeeShower.Views.NozzleSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:loc="clr-namespace:YankeeShower"
+        xmlns:local="clr-namespace:YankeeShower.Views"
+        mc:Ignorable="d"
+        Name="parent"
+        loc:DialogCloser.DialogClose="{Binding CloseWindowFlag}" 
+         
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
+   
+        BorderThickness="1"               
+        Title="Nozzle Settings" Height="410" Width="780" >
+    <Window.Resources>
+
+        <Style x:Key="intupdwn" TargetType="xctk:IntegerUpDown">
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="AllowSpin" Value="True"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="AllowTextInput" Value="False"/>
+            <Setter Property="MouseWheelActiveOnFocus" Value="True"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Increment" Value="1"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+
+        <Style x:Key="dblupdwn" TargetType="xctk:DoubleUpDown">
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="AllowSpin" Value="True"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="AllowTextInput" Value="False"/>
+            <Setter Property="MouseWheelActiveOnFocus" Value="True"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Increment" Value="1"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0"   >
+            <TextBlock Text="Number of nozzles:" x:Name="numnozzles" Margin="14,2,4,2" Height="20"/>
+            <xctk:IntegerUpDown Value="{Binding NumNozzles}"  Width="65"  Minimum="1" Maximum="100"  Height="24" Style="{StaticResource intupdwn}"
+                                ToolTip="Set to increase/decrease number of nozzles" />
+        </StackPanel>
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HorizontalAlignment="Stretch" 
+                  ItemsSource="{Binding Nozzles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                  Background="White" Width="740"
+                                                  Margin="0,6,0,12"                                                      
+                                                  VerticalAlignment="Stretch"                                                                                                                                          
+                                                  AllowDrop="False"     
+                                                  EnableColumnVirtualization="True"
+                                                  EnableRowVirtualization="True"                                                                                                            
+                                                  CanUserAddRows="false" 
+                                                  CanUserDeleteRows="False"                                              
+                                                  GridLinesVisibility="None" 
+                                                  BorderBrush="Blue"
+                                                  BorderThickness="1"
+                                                  CanUserResizeRows="False"
+                                                  CanUserReorderColumns="False"
+                                                  CanUserSortColumns = "False"
+                                                  HorizontalScrollBarVisibility="Hidden"
+                                                  VerticalScrollBarVisibility="Auto"
+                                                  SelectionMode="Single"  
+                                                  SelectionUnit="Cell"  >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Type" Width="154" TextAlignment="Center"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Path=DataContext.NozzleTypes, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+                                      DisplayMemberPath="NozzleTypeName"
+                                      ToolTip="Type of nozzle" 
+                                      IsEditable="False"
+                                      IsTabStop="False"
+                                      AllowDrop="False"                                        
+                                      SelectedValue="{Binding Path=NozzleTypeName, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"                                      
+                                      SelectedValuePath="NozzleTypeName"
+                                      HorizontalAlignment="Stretch" />
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Angle (&#x00B0;)" Width="62" TextAlignment="Center"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <xctk:DoubleUpDown x:Name="Angle" Value="{Binding SprayAngle, UpdateSourceTrigger=PropertyChanged}" 
+                                                ToolTip="Specified nozzle spray angle at 3 bar" 
+                                                Style="{StaticResource dblupdwn}"/>
+                                                                           
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Orifice" Width="60" TextAlignment="Center"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Path=DataContext.Nozzledata, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                                      DisplayMemberPath="Orifice"
+                                      ToolTip="Specified orifice code" 
+                                      IsEditable="False"
+                                      IsTabStop="False"
+                                      AllowDrop="False"                                      
+                                      SelectedValue="{Binding Path=NozzleOrificeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True}"                                      
+                                      SelectedValuePath="id"
+                                      HorizontalAlignment="Stretch" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Tip to Yankee (mm)" Width="110" TextAlignment="Center"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <xctk:IntegerUpDown Value="{Binding NozzleToYankee, UpdateSourceTrigger=PropertyChanged}" 
+                                                ToolTip="Distance in mm from nozzle tip to Yankee surface" 
+                                                Style="{StaticResource intupdwn}"                                                                                                                                                                                               
+                                                />
+
+                            <!--Maximum="{Binding DataContext.MaximumNozzleToYankee, ElementName=parent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"-->
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Spacing (mm)" Width="76" TextAlignment="Center" ToolTip="Set to 0 for first nozzle. Other nozzles can be set."/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <xctk:IntegerUpDown Value="{Binding NozzleSpacing, UpdateSourceTrigger=PropertyChanged}" 
+                                                ToolTip="Set to 0 mm for first nozzle. Other nozzles can be set."
+                                                AllowDrop="False"
+                                                IsTabStop="False"
+                                                Focusable="False"
+                                                AllowTextInput="False"
+                                                AllowSpin="True"
+                                                MouseWheelActiveOnFocus="True" >
+                                                 
+                                <xctk:IntegerUpDown.Style>
+                                    <Style TargetType="xctk:IntegerUpDown">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding NozzleID}" Value="1">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </xctk:IntegerUpDown.Style>
+                            </xctk:IntegerUpDown>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Rotation (&#x00B0;)" Width="64" TextAlignment="Center"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <xctk:IntegerUpDown Value="{Binding SprayRotation, UpdateSourceTrigger=PropertyChanged}" 
+                                                ToolTip="Nozzle rotation angle"
+                                                Style="{StaticResource intupdwn}"/>
+                                                 
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="" Width="20" TextAlignment="Center"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="X" ToolTip="Delete nozzle" TextBlock.Foreground="Red" Command="{Binding DataContext.DeleteNozzle, ElementName=numnozzles}" CommandParameter="{Binding }">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding NozzleID}" Value="1">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

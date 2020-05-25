@@ -1,0 +1,234 @@
+﻿<Window x:Class="YankeeShower.PrintPreview"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        BorderThickness="1"
+        Loaded="MetroWindow_Loaded"
+        Icon="/YankeeShower;component/Images/print.ico"        
+        Width="1000" Height="800"  WindowState="Maximized"
+        Title="Print Preview" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
+    <Window.Resources>
+        <Style x:Key="MainHeading" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="2,2,2,2"/>
+        </Style>
+        <Style x:Key="Subheading" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="2,2,2,2"/>
+        </Style>
+
+        <Style x:Key="Note" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="8"/>
+            <Setter Property="Foreground" Value="Green"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="2,2,2,2"/>
+        </Style>
+
+        <Style x:Key="Textheading" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2,2"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="11"/>
+            <!--<Setter Property="Height" Value="24"/>-->
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="2,2,2,2"/>
+        </Style>
+        <Style x:Key="TextResults" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2,2,0,0"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="FontSize" Value="11"/>
+            <!--<Setter Property="Height" Value="24"/>-->
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="2,2,2,2"/>
+        </Style>
+        
+        <Style x:Key="TextUnits" TargetType="TextBlock">
+            <Setter Property="Margin"  Value="1,2" />
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="11"/>
+            <!--<Setter Property="Height" Value="22"/>-->
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="2,2,2,2"/>
+        </Style>
+        
+    </Window.Resources>
+    <DockPanel Name="DocumentPanel" LastChildFill="True" Margin="4,4,4,4">
+        <Grid Margin="8,4,8,2" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Name="Printbtn" Style="{StaticResource LinkButton}" HorizontalAlignment="Center" Margin="12,2" Click="PrintButton_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal" ToolTip="Print report" VerticalAlignment="Center">
+                        <Image Margin="2,0,0,0" Source="/YankeeShower;component/Images/print.ico" Height="16" Width="20" />
+                        <TextBlock Margin="2,0" Text="Print" FontFamily="Segoe UI"  FontSize="14" Height="20"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Text="Printers:" Margin="20,0,2,0" Padding="2,2,2,2" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="12" />
+                <ComboBox x:Name="printers" Padding="2,2,2,2" Margin="2,2,2,2" FontFamily="Segoe UI" FontSize="12" HorizontalAlignment="Left" Width="200" VerticalContentAlignment="Center" />
+
+                <TextBlock Text="Orientation:" Margin="0,0,2,0" Padding="2,2,2,2" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="12" />
+                <ComboBox x:Name="orientation" Grid.Column="1" HorizontalAlignment="Left" FontFamily="Segoe UI" FontSize="12" Width="100" ToolTip="Paper orientation" VerticalContentAlignment="Center" Padding="2,2,2,2" Margin="2,2,2,2" SelectionChanged="Orientation_SelectionChanged" />
+                <TextBlock Text="Paper Size:" Margin="20,0,2,0" Padding="2,2,2,2" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="12" />
+                <ComboBox x:Name="papersize" Padding="2,2,2,2" Margin="2,2,2,2" FontFamily="Segoe UI" FontSize="12" HorizontalAlignment="Left" Width="100" VerticalContentAlignment="Center" SelectionChanged="Papersize_SelectionChanged" />
+            </StackPanel>
+        </Grid>
+        
+            <Viewbox VerticalAlignment="Top" x:Name="thevbdocument" Margin="0,20,0,20"  >
+                <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Center">
+                <DockPanel x:Name="thedocument" LastChildFill="True" Margin="20,4,20,4" Width="1100" Height="790" VerticalAlignment="Top" 
+                         HorizontalAlignment="Center"   >
+                    <Grid DockPanel.Dock="Top" Margin="0,20,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="logoleft" Grid.Column="0" Height="50"  HorizontalAlignment="Left" SnapsToDevicePixels="True" Stretch="Uniform"  VerticalAlignment="Top"  />
+                        <Image x:Name="logoright" Grid.Column="2" Height="50" HorizontalAlignment="Right" SnapsToDevicePixels="True" Stretch="Uniform"  VerticalAlignment="Top"  />
+                    </Grid>
+                    <Grid DockPanel.Dock="Bottom" Height="32">
+                        <TextBlock x:Name="footer" HorizontalAlignment="Center" />
+                    </Grid>
+                    
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="140"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                         <TextBlock Grid.Row="0" Text="Yankee Coating Shower Design" Style="{StaticResource MainHeading}" />
+                         <TextBlock Grid.Row="1" Text="Operating Conditions" Margin="0,2,0,0" Style="{StaticResource Subheading}" />
+
+                        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" CornerRadius="1" >
+                            <Grid VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Yankee Width" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding YankeeWidth, StringFormat=F2}" HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="m" Style="{StaticResource TextUnits}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Yankee Diameter" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding YankeeDiameter, StringFormat=F2}" HorizontalAlignment="Right" Style="{StaticResource TextResults}" />
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="m" Style="{StaticResource TextUnits}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Yankee Speed" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding YankeeSpeed}" HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="m/min" Style="{StaticResource TextUnits}" />
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Number of Nozzles" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding NumberNozzles}" HorizontalAlignment="Right"  Style="{StaticResource TextResults}"/>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Shower Pressure" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding OperatingPressure}"  HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="2" Text="kPa" Style="{StaticResource TextUnits}" />
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Shower Temperature" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding ShowerTemperature}" HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="2" Text="&#x00B0;C" Style="{StaticResource TextUnits}" />
+
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Dwell Distance" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding DwellDistance}" HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="5" Text="mm" Style="{StaticResource TextUnits}" />
+                                <TextBlock Grid.Row="1" Grid.Column="3" Text="Dwell Time" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding DwellTime}" HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="5" Text="ms" Style="{StaticResource TextUnits}" />
+
+                                <TextBlock Grid.Row="2" Grid.Column="3" Text="Revolution Time" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding YankeeRevolution}" HorizontalAlignment="Right" Style="{StaticResource TextResults}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="5" Text="ms" Style="{StaticResource TextUnits}" />
+
+
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" >
+                            <StackPanel Orientation="Vertical">
+                                <Image x:Name="showerpattern" SnapsToDevicePixels="True" Stretch="Uniform"  VerticalAlignment="Top"  />
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Grid.Row="4" Text="Design Summary" Margin="0,2,0,0"  Style="{StaticResource Subheading}"/>
+                   
+                    <!--The displayed spray angle is the Effective Angle after taking into account the nozzle rotation and the nozzle's design angle.-->
+                    <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1" CornerRadius="1" VerticalAlignment="Top">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                                    <RowDefinition Height="22"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Total Shower Width" Style="{StaticResource Textheading}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalShowerWidth, StringFormat=F3}" Style="{StaticResource TextResults}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="m" Style="{StaticResource TextUnits}" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Total Shower Flow" Style="{StaticResource Textheading}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ShowerFlow, StringFormat=F3}" Style="{StaticResource TextResults}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="l/min" Style="{StaticResource TextUnits}" />
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Evaporation Energy" Style="{StaticResource Textheading}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding EvapEnergy, StringFormat=F3}" Style="{StaticResource TextResults}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="MJ/min" Style="{StaticResource TextUnits}" />
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Evaporation Load" Style="{StaticResource Textheading}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding EvapLoadkgperhrpersqm, StringFormat=F1}" Style="{StaticResource TextResults}"/>
+                            <!--<TextBlock Grid.Row="3" Grid.Column="2" Style="{StaticResource TextUnits}">
+                                    <Run>kg/hr/m</Run><Run Typography.Variants="Superscript" Text="2"/>
+                            </TextBlock>-->
+
+                                <TextBlock Grid.Row="3" Grid.Column="2" Text="kg/hr/m²" Style="{StaticResource TextUnits}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Nozzle Rotation (average)" Style="{StaticResource Textheading}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" x:Name="nozzlerotation" Style="{StaticResource TextResults}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="5" x:Name="nozzlerotationunit" Text="&#x00B0;" Style="{StaticResource TextUnits}" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Nozzle Type(s)" Style="{StaticResource Textheading}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="4" x:Name="nozzletypes" Grid.ColumnSpan="2" HorizontalAlignment="Left" Style="{StaticResource TextResults}" TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="3" Text="Nozzle Spacing" Style="{StaticResource Textheading}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="4" x:Name="nozzlespacing" Grid.ColumnSpan="2" HorizontalAlignment="Left" Style="{StaticResource TextResults}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Row="2" Grid.Column="5" Text="mm" Style="{StaticResource TextUnits}" />
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DockPanel> 
+            </Border>
+        </Viewbox>
+       
+    </DockPanel>
+</Window>

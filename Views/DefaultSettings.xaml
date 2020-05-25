@@ -1,0 +1,125 @@
+﻿<Window x:Class="YankeeShower.Views.DefaultSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:YankeeShower"
+        SizeToContent="WidthAndHeight" 
+                
+        BorderThickness="1"
+        mc:Ignorable="d"  
+        Icon="/YankeeShower;component/Images/toolbox.ico" 
+        ResizeMode="NoResize"
+        Title="Report Settings"  WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow"  >
+    <Window.Resources>
+        <local:StringToImageConverter x:Key="stringtoimageconverter"/>
+    </Window.Resources>
+
+
+    <DockPanel Margin="4,12,4,2" LastChildFill="True">
+        <Grid DockPanel.Dock="Top" Height="5"/>
+
+        <Grid DockPanel.Dock="Bottom" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
+
+                <Button x:Name="btnSaveSettings" Command="{Binding Save}"  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  
+                            Style="{StaticResource filterButtonStyle}" HorizontalAlignment="Right" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" ToolTip="Close dialog after saving changes">
+                            <Image Source="/YankeeShower;component/Images/save.ico"  Height="16" Width="20" />
+                            <TextBlock Margin="2,0" Text="Save and Close" FontSize="12" Height="24" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="btnClose" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"   
+                        ToolTip="Close dialog without saving changes"  HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="70" Style="{StaticResource filterButtonStyle}" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/YankeeShower;component/Images/close.ico"  Height="16" Width="20"/>
+                            <TextBlock Margin="2,0,4,0" Text="Cancel"  FontSize="12" Height="24"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <StackPanel Orientation="Vertical">
+                <GroupBox >
+                    <GroupBox.Header>
+                        <TextBlock Text="Page Header" Height="18"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical" >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Left Logo:" Width="80"  VerticalAlignment="Top"/>
+                            <Border BorderBrush="Black" BorderThickness="1" Width="80" Height="80" HorizontalAlignment="Left">
+                                <Image x:Name="HeaderLeftLogo" Source="{Binding ReportHeaderLeftLogo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource stringtoimageconverter}}"  />
+                            </Border>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="2,0">
+                                <Button  Margin="4,8" Style="{StaticResource filterButtonStyle}" Name="HeaderLeftLogoButton" Command="{Binding ChangeHeaderLeftImageCommand}" CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" ToolTip="Edit header lefthand report image">
+                                            <Image Source="/YankeeShower;component/Images/edit.ico" />
+                                            <TextBlock Margin="2,0" Text="Edit"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <Button Margin="4,8" Style="{StaticResource filterButtonStyle}" 
+                                                Command="{Binding DeleteHeaderLeftImageCommand}" >
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" ToolTip="Delete header lefthand report image">
+                                            <Image Source="/YankeeShower;component/Images/delete.ico" />
+                                            <TextBlock Margin="2,0" Text="Delete"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+
+                            <TextBlock Text="Right Logo:" Width="80"  VerticalAlignment="Top"/>
+                            <Border BorderBrush="Black" BorderThickness="1" Width="80" Height="80" HorizontalAlignment="Left">
+                                <Image x:Name="HeaderRightLogo" Source="{Binding ReportHeaderRightLogo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource stringtoimageconverter}}"  />
+                            </Border>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="2,0">
+                                <Button Margin="4,8" Style="{StaticResource filterButtonStyle}" Name="HeaderRightLogoButton" 
+                                                Command="{Binding ChangeHeaderRightImageCommand}" CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" ToolTip="Edit header righthand report image">
+                                            <Image Source="/YankeeShower;component/Images/edit.ico" />
+                                            <TextBlock Margin="2,0" Text="Edit"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <Button  Margin="4,8" Style="{StaticResource filterButtonStyle}" 
+                                                Command="{Binding DeleteHeaderRightImageCommand}" >
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal" ToolTip="Delete header righthand report image">
+                                            <Image Source="/YankeeShower;component/Images/delete.ico" />
+                                            <TextBlock Margin="2,0" Text="Delete"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox >
+                    <GroupBox.Header>
+                        <TextBlock Text="Page Footer" Height="18"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Footer text:" Width="80" />
+                            <TextBox Width="300" Margin="0,2"  Text="{Binding ReportFooterText, FallbackValue=''}" Foreground="{Binding SelectedColorText, ElementName=footercolorpicker }"/>
+                            <xctk:ColorPicker x:Name="footercolorpicker" SelectedColor="{Binding FooterTextColor, FallbackValue=Black}" Style="{StaticResource colorpickerstyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+               
+
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

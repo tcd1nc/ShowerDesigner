@@ -1,0 +1,39 @@
+﻿<Window  x:Class="YankeeShower.TextInputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               
+        BorderThickness="1"
+        ResizeMode="NoResize"
+        x:Name="txtdialog"
+        Width="350"
+        Height="180"
+        Title="Text Input Dialog"  WindowStartupLocation="CenterScreen"  ContentRendered="Window_ContentRendered">
+
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,15,14,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" Width="60" Margin="0,0,10,0">_Ok</Button>
+            <Button Grid.Column="1" IsCancel="True" Width="60">_Cancel</Button>
+        
+        </Grid>
+        <Grid Margin="14,14,14,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32"  />
+            </Grid.RowDefinitions>
+
+            <TextBox Name="lblQuestion" Grid.Row="0"  >Question:</TextBox>
+            
+            <TextBox Name="txtAnswer" Grid.Row="1" Margin="0,2,0,0" Background="Honeydew" >Answer</TextBox>
+            
+        </Grid>
+
+    </DockPanel>
+
+</Window>

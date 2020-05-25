@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="YankeeShower.NozzleControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+             mc:Ignorable="d" Visibility="Visible"                           
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave"             
+             d:DesignHeight="70" d:DesignWidth="50">
+
+    <Canvas Background="Transparent">
+        <!--ToolTip="Right click nozzle to adjust"-->
+        <Image x:Name="nozzle" Width="50" Height="50" Source="/YankeeShower;component/Images/Nozzle2.png" Canvas.Left="0" Canvas.Top="0" >
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Foreground="Blue" Text="{Binding DataContext.NozzleTypeName, StringFormat={}Nozzle Type: {0}}"/>
+                                <TextBlock Foreground="Blue" Text="{Binding DataContext.SprayAngle, StringFormat={}Designed Spray Angle: {0:N0}&#x00B0;}"/>
+                                <TextBlock Foreground="Blue" Text="{Binding DataContext.NozzleToYankee, StringFormat={}Nozzle To Yankeee: {0:N0} mm}"/>
+                                <TextBlock Foreground="Blue" Text="{Binding DataContext.SprayRotation, StringFormat={}Nozzle Rotation: {0:N0}&#x00B0;}"/>
+                                <TextBlock Foreground="Blue" FontWeight="Bold" Text="Right click nozzle to adjust settings"/>
+
+                            </StackPanel>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Image.Style>
+                        
+            <Image.ContextMenu>
+                <ContextMenu>
+                    <ContextMenu.Style>
+                        <Style TargetType="ContextMenu">
+                            <!--<Setter Property="Tag" Value="{Binding DataContext,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"/>-->
+                            <Setter Property="Background" Value="WhiteSmoke"/>
+                        </Style>
+                    </ContextMenu.Style>
+                   
+                        <MenuItem >
+                            <MenuItem.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Type" Width="80"/>
+                                    <ComboBox ItemsSource="{Binding DataContext.NozzleTypes, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+                                          DisplayMemberPath="NozzleTypeName"
+                                          SelectedValue="{Binding DataContext.NozzleTypeName, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"                                              
+                                          SelectedValuePath="NozzleTypeName"
+                                          Width="130" ToolTip="{Binding DataContext.NozzleTypeName, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+
+                                </StackPanel>
+                                </DataTemplate>
+                            </MenuItem.HeaderTemplate>
+                        </MenuItem>
+
+                        <MenuItem>
+                        <MenuItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Angle" Width="80"/>
+                                    <xctk:DoubleUpDown x:Name="angle" Value="{Binding DataContext.SprayAngle, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" 
+                                                Increment="1" DefaultValue="110" 
+                                                        ToolTip="Nozzle's designed spray angle"
+                                                       Maximum="{Binding DataContext.MaximumSprayAngle, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                                        Width="50"/>
+                                    
+                                    <TextBlock Margin="2,0,0,0" Text="&#x00B0;" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.HeaderTemplate>
+                    </MenuItem>
+                    <MenuItem >
+                        <MenuItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Orifice" Width="80"/>
+                                    <ComboBox ItemsSource="{Binding  DataContext.Nozzledata, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" 
+                                      DisplayMemberPath="Orifice"
+                                              ToolTip="Nozzle orifice code"
+                                      SelectedValue="{Binding DataContext.NozzleOrificeID, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"                                      
+                                      SelectedValuePath="id"
+                                      Width="80"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.HeaderTemplate>
+                    </MenuItem>
+                    <MenuItem >
+                        <MenuItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="To Yankee" Width="80"/>
+                                    <xctk:IntegerUpDown Value="{Binding DataContext.NozzleToYankee, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" Width="50"
+                                                ToolTip="Distance from nozzle tip to Yankee surface"
+                                                     
+                                                        Increment="1"   DefaultValue="165" />
+
+                                    <!--Maximum="{Binding MaximumNozzleToYankee, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"-->
+
+
+                                    <TextBlock Margin="2,0,0,0" Text="mm" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.HeaderTemplate>
+                    </MenuItem>
+
+                    <MenuItem >
+                        <MenuItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Spacing" Width="80"/>
+                                    <xctk:IntegerUpDown Value="{Binding DataContext.NozzleSpacing, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" Width="50"
+                                                ToolTip="Nozzle spacing from left nozzle"
+                                                        Increment="1"  DefaultValue="180" >
+                                        <xctk:IntegerUpDown.Style>
+                                            <Style TargetType="xctk:IntegerUpDown">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DataContext.NozzleID, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" Value="1">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </xctk:IntegerUpDown.Style>
+                                    </xctk:IntegerUpDown>
+                                    <TextBlock Margin="2,0,0,0" Text="mm" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.HeaderTemplate>
+                    </MenuItem>
+
+                    <MenuItem >
+                        <MenuItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Rotation" Width="80"/>
+                                    <xctk:IntegerUpDown Value="{Binding DataContext.SprayRotation, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" Width="50"
+                                               ToolTip="Nozzle rotation in boom"
+                                               Increment="1"  DefaultValue="5"/>
+                                    <TextBlock Margin="2,0,0,0" Text="&#x00B0;" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.HeaderTemplate>
+                    </MenuItem>
+
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+        <Polygon x:Name="spray" Stroke="Black" StrokeThickness="1" Points="{Binding ImagePoints, UpdateSourceTrigger=PropertyChanged}">
+            <Polygon.OpacityMask>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="1" Color="Black"/>
+                        <GradientStop Offset="0" Color="Transparent"/>
+                        <!--<GradientStop Offset="0" Color="LightGray"/>-->
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Polygon.OpacityMask>
+            <Polygon.Fill >
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="WhiteSmoke" Offset="0"/>
+                    <!--<GradientStop Color="DarkGray" Offset="0"/>-->
+                    <GradientStop Color="DarkGray" Offset="1"/>
+                </LinearGradientBrush>
+            </Polygon.Fill>
+            
+        </Polygon>
+         <!--<Rectangle Width="30" Height="20" Canvas.Left="10" Canvas.Top="50">-->
+        <Rectangle Width="30" Height="{Binding NozzleThroatHeight, Mode=OneWay, FallbackValue=20, UpdateSourceTrigger=PropertyChanged}" Canvas.Left="10" Canvas.Top="50">
+                <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="Gray"/>
+                        <GradientStop Offset="0.5" Color="White"/>
+                        <GradientStop Offset="1" Color="Gray"/>
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+         </Rectangle>
+        
+      </Canvas>
+    
+</UserControl>

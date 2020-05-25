@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="YankeeShower.ShowerBoom"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Focusable="True" 
+             Name="main"
+             d:DesignHeight="50" d:DesignWidth="300" >
+    <!--<Label Name="boom1" Content="Coating Shower" VerticalContentAlignment="Center" FontSize="20" HorizontalContentAlignment="Center"  Height="50" Width="{Binding RelativeSource= {RelativeSource FindAncestor, AncestorType={x:Type Canvas}}, Path=ActualWidth}">-->
+
+        <Label Name="boom1" Content="Coating Shower" VerticalContentAlignment="Center" FontSize="20" HorizontalContentAlignment="Center" Height="50" 
+               Width="{Binding ShowerWidth, Mode=OneWay, ElementName=main, FallbackValue=0, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
+        <Label.Background>
+            <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Offset="0" Color="Gray"/>
+                    <GradientStop Offset="0.5" Color="White"/>
+                    <GradientStop Offset="1" Color="Gray"/>
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </Label.Background>
+    </Label>
+
+</UserControl>
