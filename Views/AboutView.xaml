@@ -49,13 +49,13 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Author:" Style="{StaticResource Labelheading}" />
-                        <TextBlock Text="Terry Deed" Margin="4,8,0,0" FontSize="12" FontFamily="Segoe UI" />
+                        <TextBlock Text="xxxxx" Margin="4,8,0,0" FontSize="12" FontFamily="Segoe UI" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                  
+                   <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Built:" Style="{StaticResource Labelheading}" />
                         <TextBlock Text="2016" Margin="4,8,0,0" FontSize="12" FontFamily="Segoe UI" />
                     </StackPanel>
-                   
                     <StackPanel Orientation="Horizontal" Margin="4,8,0,0" HorizontalAlignment="Center" >
                         <TextBlock Text="End-User Agreement" FontSize="16" Foreground="Blue" />
                     </StackPanel>
@@ -69,53 +69,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="4,8,0,0">
                         <TextBlock Text="Licensor:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
-                        <TextBlock Text="Terry Deed" Margin="4,0,0,0" FontSize="12" />
+                        <TextBlock Text="xxxxxxx" Margin="4,0,0,0" FontSize="12" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="4,8,0,0">
                         <TextBlock Text="Licensee:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
                         <TextBlock x:Name="licensee" Margin="4,0,0,0" FontSize="12" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="4,8,0,0" VerticalAlignment="Top">
-                        <TextBlock Text="License:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
-                        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch">
-                            <ScrollViewer Height="70"  VerticalScrollBarVisibility="Auto" >
-                                <TextBlock ScrollViewer.CanContentScroll="True" FontFamily="Segoe UI" Width="400" Padding="2,2,2,2"
-                                            VerticalAlignment="Top" TextWrapping="Wrap" Text="A revocable, non-exclusive, non-transferrable, limited license is granted to the Licensor and affiliated companies.&#10;The Licensee acknowledges that this is only a limited nonexclusive license. The Licensor is and remains the owner of all titles, rights, and interests in the Application"  FontSize="12" />
-                            </ScrollViewer>
-                        </Border>
+                        <TextBlock Text="License: GNU V3" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
+                        
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="4,8,0,0" VerticalAlignment="Top" >
-                        <TextBlock Text="Restrictions:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
-                        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch">
-                            <ScrollViewer Height="70" VerticalScrollBarVisibility="Auto">
-                                <TextBlock ScrollViewer.CanContentScroll="True" FontFamily="Segoe UI" Width="400" Padding="2,2,2,2" TextWrapping="Wrap" Text="The Licensee agrees not to and will not permits others to license, sell, rent, lease, assign, distribute, outsource, disclose, or supply this Application to any third party.&#10;The Licensee agrees not to carry out or authorise any modification, adaptation, improvement, enhancement, translation or derivative work on or based on this Application." FontSize="12" />
-                            </ScrollViewer>
-                        </Border>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="4,8,0,0" VerticalAlignment="Top">
-                        <TextBlock Text="Modifications:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
-                        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch">
-                            <ScrollViewer Height="40" VerticalScrollBarVisibility="Auto">
-                                <TextBlock ScrollViewer.CanContentScroll="True" FontFamily="Segoe UI" Width="400" Padding="2,2,2,2" TextWrapping="Wrap" Text="The Licensor reserves the right to modify or improve the Application without notice or liability to the Licensee or any third party." FontSize="12" />
-                            </ScrollViewer>
-                        </Border>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="4,8,0,0" VerticalAlignment="Top">
-                        <TextBlock Text="Limitation of Liability:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
-                        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch">
-                            <ScrollViewer Height="70" VerticalScrollBarVisibility="Auto">
-                                <TextBlock ScrollViewer.CanContentScroll="True" FontFamily="Segoe UI"  Width="400" Padding="2,2,2,2" TextWrapping="Wrap" Text="In no event will the Licensor be liable to the Licensee or Licensee's associated parties for any lost profits, lost savings, or incidental, indirect, special or consequential, arising out of the use or inability to use the Application or the breach of this agreement, even if advised of the possibility of such damages. Some states do not allow the limitation or exclusion of liability for incidental or consequential damages and so in those states the total liability will be limited to USD $0." FontSize="12" />
-                            </ScrollViewer>
-                        </Border>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="4,8,0,0" VerticalAlignment="Top" >
-                        <TextBlock Text="Indemnity:" Style="{StaticResource Labelheading}" Margin="0,0,0,0" />
-                        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch">
-                            <ScrollViewer Height="50" VerticalScrollBarVisibility="Auto">
-                                <TextBlock ScrollViewer.CanContentScroll="True" FontFamily="Segoe UI" Width="400" Padding="2,2,2,2" TextWrapping="Wrap" Text="The Licensee agrees to defend, indemnify and hold harmless the Licensor, from all claims, losses, damages, complaints, or expenses connected with or resulting from Licensee's business operations." FontSize="12" />
-                            </ScrollViewer>
-                        </Border>
-                    </StackPanel>
+                    
                 </StackPanel>
             </Grid>
         </DockPanel>
